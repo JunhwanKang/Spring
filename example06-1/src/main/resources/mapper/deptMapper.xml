@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.example061.dao.DeptDao">
+	<select id="existsById" resultType="boolean">
+		<!-- oracle hint 사용 : index fast full scan : 인덱스의 개수를 센다 -->
+		<!-- index_desc -->
+		 select /*+ index_ffs(dept pk_dept) */ count(*) from dept where deptno=#{deptno} and rownum=1 
+	</select>
+
+	<select id="findAll" resultType="Dept">
+		select deptno, dname, loc from dept		
+	</select>
+	
+	<select id="findById" resultType="Dept">
+		select deptno, dname, loc from dept where deptno=#{deptno}		
+	</select>
+	
+<!--  		insert into dept(deptno, dname, loc) values(dept_seq.nextval, #{dname}, #{loc}) -->
+	<insert id="insert">
+		<selectKey resultType="int" keyProperty="deptno" order="BEFORE">
+			select dept_seq.nextval from dual
+		</selectKey>
+		insert into dept(deptno, dname, loc) values(#{deptno}, #{dname}, #{loc})
+	</insert>
+	
+	<update id="update">
+		update dept set dname=#{dname}, loc=#{loc} where deptno=#{deptno}
+	</update>
+	
+	<delete id="delete">
+		delete from dept where deptno=#{deotno} and rownum=1
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

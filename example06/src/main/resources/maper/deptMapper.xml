@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.example06.dao.DeptDao">
+	<!-- CDATA 영역은 xml로 해석하지 않는다 <->반대 PCDATA -->
+		<!-- resultType에 com.icia.example06.entity.Dept라고 써도 됨 
+			이걸 줄여주는게 type-aliases
+		-->
+	<select id="findById" resultType="Dept">
+		<![CDATA[
+			select * from dept where deptno=#{deptno} and rownum<=1
+		]]>
+	</select>
+	
+	<select id="findAll" resultType="Dept">
+		<![CDATA[
+			select * from dept
+		]]>
+	</select>
+	
+	<insert id="insert">
+		insert into dept(deptno, dname, loc) values(#{deptno}, #{dname}, #{loc})
+	</insert>
+	
+	<update id="update">
+		update dept set dname=#{dname}, loc=#{loc} where deptno=#{deptno} and rownum=1
+	</update>
+	
+	<delete id="delete">
+		delete from dept where deptno=#{deptno} and rownu,=1
+	</delete>
+	
+	<select id="existsById" resultType="boolean">
+		select count(*) from dept where deptno=#{deptno} and rownum=1
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
