@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	function idCheck(){
+		var patt = /^[A-Za-z0-9]{8,10}$/;
+		var $id= $("#id").val();
+		if($id=="")
+			return {result: false, msg: "필수 입력입니다"};
+		if(patt.test($id)==false){
+			return {result: false, msg: "아이디는 영숫자 8~10자입니다"};
+		} else {
+			return { result: true, msg: "멋진 아이디네요"};
+		}
+	}
+	
+	function passwordCheck(){
+		var patt= /^[0-9]{8,10}$/;
+		var $password = $("#password").val();
+		if($password=="")
+			return {result: false, msg: "필수 입력입니다"};
+		if(patt.test($password)==false)
+			return {result: false, msg: "비밀번호는 숫자 8~10자입니다"};
+		else
+			return {result: true, msg: "안전"};
+	}
+	
+	$(function(){
+		$("#id").on("blur", function(){
+			var report = idCheck();
+			if(report.result==true)
+				$("#id_msg").text(report.msg).css("color", "green");
+			else
+				$("#id_msg").text(report.msg).css("color", "red");
+		});
+		
+		
+		$("#login").on("click", function(){
+			var report = idCheck();
+			if(report.result==true)
+				$("#id_msg").text(report.msg).css("color", "green");
+			else{
+				$("#id_msg").text(report.msg).css("color", "red");
+				return;
+			}
+		$("#password").on("blur", function(){
+			var report = passwordCheck();
+			if(report.result==true)
+				$("#password_msg").text(report.msg).css("color", "green");
+			else{
+				$("#password_msg").text(report.msg).css("color", "red");
+				return;
+			}
+		});
+			alert("로그인 합니다")
+		})
+	});
+</script>
+</head>
+<body>
+	<form action="#" method="post" id="login_form">
+		아이디: <span id="id_msg"></span><br>
+		<input type="text" name="id" id="id"><br>
+		비밀번호 :<span id="password_msg"></span><br>
+		<input type="password" name="password", id="password"><br>
+		<button type="button" id="login">로그인</button> 
+	</form>
+</body>
+</html>

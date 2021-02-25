@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	var str ="ABC";
+	//숫자
+	var patt1 = /[0-9]/;
+	alert(patt1.test(str));
+	//대문자
+	var patt2 = /[A-Z]/;
+	alert(patt2.test(str));
+	//대소문자
+	var patt3 = /[A-Za-z]/
+	alert(patt3.test(str));
+	//영숫자
+	var patt4 = /[A-Za-Z0-9]/;
+	alert(patt4.test(str));
+</script>
+</head>
+<body>
+	
+</body>
+</html>

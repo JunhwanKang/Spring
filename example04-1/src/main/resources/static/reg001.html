@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	$(function(){
+		var $text = $("#text").val();
+		var patt1 = /ic/;
+		console.log(patt1.test($text));
+		var patt2 = /iz/;
+		console.log(patt2.test($text));
+	})
+</script>
+</head>
+<body>
+	<input type="text" id="text" value="icia">
+	<button id="check">확인</button>
+</body>
+</html>
