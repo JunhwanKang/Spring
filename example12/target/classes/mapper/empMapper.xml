@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.example12.dao.EmpDao">
+	<select id="findAll" resultType="emp">
+		select * from emp
+	</select>
+	
+	<select id="findById" resultType="emp">
+		select * from emp where empno=#{empno} and rownum=1
+	</select>
+	
+	<select id="findAllByJob" resultType="emp">
+		select * from emp where job=#{job}
+	</select>
+	
+	<select id="findAllByJobAndDeptno" resultType="emp">
+		select * from emp where job=#{job} and deptno=#{deptno}
+	</select>
+	
+	<!-- 마이바티스는 기본적으로 null값을 넣을 수 없다 -->
+	<!-- jdbcType으로 null을 가능하게 만들수 있다 -->
+	<insert id="insert">
+		<selectKey keyProperty="empno" resultType="int" order="BEFORE">
+			select /*+ index_desc(emp pk_emp) */ max(empno) from emp
+		</selectKey>
+		insert into emp(empno, ename, job, mgr, sal, comm, deptno)
+		values(#{empno}+1, #{ename}, #{job}, #{mgr}, #{sal}, #{comm, jdbcType=INTEGER}, #{deptno})
+	</insert>
+	
+	<update id="update">
+		update emp
+		<trim suffixOverrides="," prefix="set">
+			<if test="job!=null">job=#{job},</if>
+			<if test="mgr!=null">mgr=#{mgr},</if>
+			<if test="sal!=null">sal=#{sal},</if>
+			<if test="comm!=null">comm=#{comm},</if>
+			<if test="deptno!=null">deptno=#{deptno}</if>
+		</trim>
+		where empno=#{empno} and rownum=1
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
