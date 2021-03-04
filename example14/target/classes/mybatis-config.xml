@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.icia.example14.entity.Post" alias="post"/>
+	</typeAliases>
+	
+	<!--
+		입력 데이터를 스프링이 처리 못하는 경우: PropertyEditor
+		출력을 스프링이 처리 못하는 경우 : MessageConverter -> <annotation-driven>에 추가 하면 된다
+		
+		입출력 형식을 마이바티스가 이해 못하는 경우: TypeHandler
+	 -->
+	 
+</configuration>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.example13.dao.PostDao">
+
+	<select id="count" resultType="int">
+		select /*+ index_ffs(post post_pk_pno) */ count(pno) from post 
+	</select>
+	
+	<select id="findAll" resultType="post">
+	<![CDATA[
+		select * from
+			(select rownum as rnum, p.* from
+				(select pno, title, nickname, readCnt from post order by pno desc) p
+			where rownum <=#{endRowNum})
+		where rnum>=#{startRowNum}
+	]]> 
+	</select>
+	
+	<insert id="insert">
+		<selectKey keyProperty="pno" resultType="int" order="BEFORE">
+			select /*+ index_desc(post post_pk_pno) */ max(pno) from post
+		</selectKey>
+		insert into post(pno, title, content, nickname, readCnt)
+		values(#{pno}+1, #{title}, #{content}, #{nickname}, 0)
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
