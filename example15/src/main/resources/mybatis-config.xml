@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--
+		1. null 입력 허용 -> 하지 않는 편이 나음
+		2. typeAlias
+		3. typeHandler
+	-->
+	<typeAliases>
+		<typeAlias type="com.icia.example15.entity.Post" alias="post"/>
+	</typeAliases>
+</configuration>
+
+

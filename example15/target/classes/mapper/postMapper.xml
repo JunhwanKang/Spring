@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="postMapper">
+	<select id="count" resultType="int">
+		select /*+ index_ffs(post post_pk_pno) */ count(pno) from post
+	</select>
+	
+	<select id="findAll" resultType="post">
+	<![CDATA[
+	select * from
+		(
+		select rownum as rnum, p.* from
+			(select /*+ index_desc(post post_pk_pno) */ pno, title, nickname, writeTime, readCnt from post) p 
+			where rownum<=#{endRowNum}
+			)
+	where rnum>=#{startRowNum}
+	]]>	
+	</select>
+	
+	<select id="findById" resultType="post">
+		select * from post where pno=#{pno} and rownum=1
+	</select>
+	
+	<insert id="insert">
+		<selectKey keyProperty="pno" resultType="int" order="BEFORE">
+			select /*+ index_desc(post post_pk_pno) */ max(pno) from post 
+		</selectKey>
+		insert into post(pno, title, content, nickname, writeTime, readCnt)
+		values(#{pno}+1, #{title}, #{content}, #{nickname}, sysdate, 0)
+	</insert>
+	
+	<update id="update">
+		update post
+		<trim suffixOverrides="," prefix="set">
+			<if test="title != null">title=#{title},</if>
+			<if test="content != null">content=#{content},</if>
+			<if test="readCnt != null">readCnt=readCnt+1</if>
+		</trim>
+		where pno=#{pno} and rownum=1
+	</update>
+	
+	<delete id="delete">
+		delete from post where pno=#{pno} and rownum=1
+	</delete>
+</mapper>
