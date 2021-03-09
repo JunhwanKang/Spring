@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.example18.dao.UserDao">
+	<insert id="insert">
+		insert into users(username, password, irum, email, enabled, login_failure_cnt)
+		values(#{username},#{password}, #{irum}, #{email}, 1, 0)
+	</insert>
+	
+	<select id="findById" resultType="user">
+		select username, password, irum, email, enabled, login_failure_cnt as loginFailureCnt from users where username=#{username} and rownum=1
+	</select>
+	
+	<update id="update">
+		update users
+		<trim suffixOverrides="," prefix="set">
+			<if test="loginFailureCnt!=null">login_failure_cnt=#{loginFailureCnt},</if>
+			<if test="enabled!=null">enabled=#{enabled}</if>
+		</trim>
+		where username=#{username} and rownum=1
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

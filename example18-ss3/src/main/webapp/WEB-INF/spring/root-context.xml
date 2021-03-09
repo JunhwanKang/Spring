@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+		<property value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE" name="url"/>
+		<property value="scott" name="username"/>
+		<property value="TIGER" name="password"/>
+	</bean>	
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mapperLocations" value="classpath:/mapper/*.xml" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+	</bean>
+		
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+ 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+ 	</bean>
+	
+	<!-- DataSource를 기반으로 트랜잭션을 관리하는 객체 생성 -->
+ 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<mybatis-spring:scan base-package="com.icia.example18.dao"/>	
+	
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+		
+	<!-- 컨트롤러를 제외한 스프링 빈 component-scan -->
+	<!-- namespace context추가 -->
+	<context:component-scan base-package="com.icia.example18">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+</beans>
