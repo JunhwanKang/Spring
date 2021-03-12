@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.zboard.dao.UserDao">
+	<select id="findById" resultType="user">
+	<!-- 오라클이 사용하는 user, comment, level 단어는 sql에 사용 불가 -->
+		select username, password, irum, email, joinday, 
+		birthday, login_failure_cnt loginFailureCnt, write_cnt writeCnt,
+		levels as "level", enabled, profile, check_code checkCode from users 
+		where username=#{username} and rownum=1
+	</select>
+
+	<select id="findByEmail" resultType="user">
+		select username, password, irum, email, joinday, 
+		birthday, login_failure_cnt loginFailureCnt, write_cnt writeCnt,
+		levels as "level", enabled, profile, check_code checkCode from users 
+		where email=#{email} and rownum=1
+	</select>
+
+	<select id="findByCheckCode" resultType="user">
+		select username, password, irum, email, joinday, 
+		birthday, login_failure_cnt loginFailureCnt, write_cnt writeCnt,
+		levels as "level", enabled, profile, check_code checkCode from users 
+		where check_code=#{checkCode} and rownum=1
+	</select>
+	
+	<insert id="insert">
+		insert into users (username, password, irum, email, joinday, birthday, login_failure_cnt,
+		write_cnt, levels, enabled, profile, check_code) 
+		values(#{username}, #{password}, #{irum}, #{email}, #{joinday}, #{birthday}, 
+		#{loginFailureCnt}, #{writeCnt}, #{level}, #{enabled}, #{profile}, #{checkCode})
+	</insert>
+	
+	<!-- 
+		체크코드를 확인 -> 체크코드 삭제, enabled를 변경
+		비밀번호 변경
+		내 정보 변경 : 비밀번호, 이메일, 프사
+		로그인 실패 횟수 변경
+		레벨 변경
+		글쓴 횟수 변경
+	 -->
+	<update id="update">
+		update users
+		<trim suffixOverrides="," prefix="set">
+			<if test="checkCode!=null">check_code=null,</if>
+			<if test="enabled!=null">enabled=#{enabled},</if>
+			<if test="password!=null">password=#{password},</if>
+			<if test="email!=null">email=#{email},</if>
+			<if test="profile!=null">profile=#{profile},</if>
+			<if test="loginFailureCnt!=null">login_failure_cnt=#{loginFailureCnt},</if>
+			<if test="level!=null">levels=#{level}</if>
+			<if test="writeCnt!=null">write_cnt=#{writeCnt}</if>
+		</trim>
+		where username=#{username} and rownum=1
+	</update>
+	
+	<delete id="deleteById">
+		delete from users where username=#{username} and rownum=1
+	</delete>
+	
+	<!-- 회원가입 신청시 체크코드를 쏴준다 그런데 회원가입만하고 체크코드 확인안하는 사람이있다 그래서 삭제 해준다.(주기적으로 삭제)
+		가입확인한 체크코드는 지워지는데 남아있다는 것은 확인 안한것이다.
+	 -->
+	
+	<delete id="deleteByCheckCodeIsNotNull">
+		delete from users where check_code is not null
+	</delete>
+</mapper>
