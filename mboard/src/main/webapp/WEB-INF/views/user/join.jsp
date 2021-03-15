@@ -37,14 +37,27 @@
 </style>
 <script>
 function loadProfile() {
-	  var $file = $("#profile")[0].files[0];
-	  var reader = new FileReader();
-	  
-	  reader.onload = function () {
-	   	$("#show_profile").attr("src", reader.result);  
-	  }
-	  
-	  reader.readAsDataURL($file);
+		var $file = $("#profile")[0].files[0];
+		var maxSize = 1024*1024;			// 업로드할 프로필 최대 크기 : 1MB
+		if($file.size>maxSize) {
+			Swal.fire({
+				icon: 'error',
+				title : '프로필 크기 오류',
+				text : '프로필 사진은 1MB를 넘을 수 없습니다'
+			});
+			$("#profile").val("");
+			$("#show_profile").removeAttr("src");
+			return false;
+		}
+	
+		var $file = $("#profile")[0].files[0];
+		var reader = new FileReader();
+		
+		reader.onload = function () {
+		 	$("#show_profile").attr("src", reader.result);  
+		}
+		
+		reader.readAsDataURL($file);
 }
 	  
 function idCheck(){
@@ -52,26 +65,73 @@ function idCheck(){
 	$("#username").val($username);
 	
 	var pattern = /^[A-Z0-9]{8,10}$/;
-	if(username==""){
+	if($username==""){
 		$("#username_msg").text("아이디는 필수 입력입니다.").attr("class", "fail");
 		return false;
 	}
 	if(pattern.test($username)==false){
 		$("#username_msg").text("아이디는 대문자와 숫자 8~10자리입니다").attr("class", "fail");
-		retrun false;
+		return false;
 	}
 	return true;
 }	  
-	  
+
+function emailCheck(){
+	var $email = $("#email").val();
+	var pattern =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	
+	if($email==""){
+		$("#email_msg").text("필수 입력입니다.").attr("class", "fail");
+		return false;		
+	}
+	
+	if(pattern.test($email)==false){
+		$("#email_msg").text("올바르지 않은 이메일 형식입니다.").attr("class", "fail");
+		return false;		
+	}
+}
 	  
 $(document).ready(function() {
 	$("#profile").on("change", loadProfile);
+	$("#username").on("blur", function(){
+		if(idCheck()==false)
+			return false;
+		$.ajax({
+			url: "/mboard/users/user/username?username=" + $("#username").val()
+		}).done(()=>{$("#username_msg").text("사용 가능한 아이디입니다").attr("class", "success")})
+		.fail(()=>{$("#username_msg").text("이미 사용중인 아이디입니다").attr("class", "fail")})
+	});
+	
+	$("#email").on("blur", function(){
+		if(emailCheck()==false)
+			return false;
+		$.ajax({
+			url:"/mboard/users/user/email?email=" + $("#email").val()
+		}).done(()=>{$("#email_msg").text("사용 가능한 이메일입니다").attr("class", "success")})
+		.fail(()=>{$("#email_msg").text("이미 사용중인 이메일입니다").attr("class", "fail")})
+	})
+	
+	$("#join").on("click", function(){
+		if(idCheck()==false)
+			if(emailCheck()==false)
+				return false;
+		var formData = new FormData($("#join_form")[0]);
+		
+		$.ajax({
+			url: "/mboard/users",
+			method:"post",
+			data: formData,
+			contentType: false,
+			processData: false
+		}).done(()=>{alert("가입 확인 메일을 확인해주세요")})
+		.fail(()=>{alert("가입에 실패했습니다")});
+	})
 })
 </script>
 </head>
 <body>
 	<div class="container">
-		<form action="#">
+		<form id="join_form">
 			<div id="img_box">
 				<img id="show_profile">
 			</div>

@@ -27,4 +27,23 @@
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.cdj.mboard.dao"/>		
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="username" value="wnsghks5657@gmail.com" />
+		<property name="password" value="kjh_1017kk" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.host">smtp.gmail.com</prop>
+				<prop key="mail.smtp.port">465</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.socketFactory.port">465</prop>
+				<prop key="mail.smtp.socketFactory.fallback">false</prop>
+				<prop key="mail.smtp.auth">true</prop> 
+				<prop key="mail.smtp.timeout">8500</prop>
+				<!-- log를 보고 싶다면 true. false로 하면 메일 관련 메시지가 나오지 않는다 -->
+				<prop key="mail.debug">true</prop>	
+			</props>
+		</property>
+	</bean>	
 </beans>

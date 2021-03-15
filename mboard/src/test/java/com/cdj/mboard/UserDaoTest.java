@@ -30,9 +30,9 @@ public class UserDaoTest {
 	
 	@Test
 	public void insertTest() {
-		User user = User.builder().username("user12345").password("1234").irum("ȫ�浿").email("user123@naver.com")
+		User user = User.builder().username("USER123456").password("1234").irum("ȫ�浿").email("user123@naver.com")
 				.joinday(LocalDate.now()).birthday(LocalDate.now()).loginFailureCnt(3).writeCnt(2)
-				.level(Level.GOLD).enabled(true).profile("user123.jpg").checkCode("1111").build();
+				.level(Level.GOLD).enabled(false).profile("user123.jpg").checkCode("1111").build();
 		assertEquals(1, dao.insert(user));		
 	}
 	

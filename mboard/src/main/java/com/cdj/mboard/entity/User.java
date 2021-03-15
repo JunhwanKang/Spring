@@ -2,6 +2,8 @@ package com.cdj.mboard.entity;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,7 @@ public class User {
 	private String irum;
 	private String email;
 	private LocalDate joinday;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate birthday;
 	private Integer loginFailureCnt;
 	private Integer writeCnt;
