@@ -16,6 +16,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- 숫자, 문자열 유틸리티 클래스 : 랜덤 문자열(체크코드, 임시비밀번호) -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.11</version>
+		</dependency>
+	
 		<!-- Servlet : standard, jstl, jsp, servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

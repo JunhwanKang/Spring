@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cdj.mboard.dto.UserDto.Join;
 import com.cdj.mboard.entity.User;
 import com.cdj.mboard.service.UserRestService;
 
@@ -39,10 +40,11 @@ public class UserRestController {
 	}
 
 	@PostMapping("/users")
-	public ResponseEntity<?> join(@ModelAttribute User user, @RequestParam MultipartFile profile){
-		System.out.println(user);
-		System.out.println(profile.getOriginalFilename());
-		service.join();
+	public ResponseEntity<?> join(@ModelAttribute Join dto, @ModelAttribute User user , @RequestParam MultipartFile profile){
+		System.out.println("dto는 이거: "+dto);
+		System.out.println("user는 이거: "+user);
+		System.out.println("profile은 이거: "+profile.getOriginalFilename());
+		service.join(dto, profile);
 		return ResponseEntity.ok(null);
 	}
 }

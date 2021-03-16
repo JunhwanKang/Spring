@@ -46,4 +46,8 @@
 			</props>
 		</property>
 	</bean>	
+	
+	<bean id="modelMapper" class="org.modelmapper.ModelMapper" />
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	
 </beans>
