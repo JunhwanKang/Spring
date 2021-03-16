@@ -31,4 +31,31 @@
 	
 	<!-- DAO기반으로 DAO를 작성할 경우 스프링이 아닌 마이바티스가 DAO를 생성한 후 마이바티스 스프링 연동 모듈을 사용해 스프링 빈으로 등록 -->
 	<mybatis-spring:scan base-package="com.icia.zboard.dao"/>
+	
+	<!-- 자바메일을 지원하는 스프링 메일 설정 -->
+	<!-- 메일을 발송하려면 SMTP 서비스가 필요함 -> 서버가 없기 때문에 gmail에 메일을 전달하면 gmail이 메일 발송 -->
+	<!-- 문제점 : 메일 발송이 실패하면 우리는 알수가 없다... -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="username" value="wnsghks5657@gmail.com" />
+		<property name="password" value="비밀번호" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.host">smtp.gmail.com</prop>
+				<prop key="mail.smtp.port">465</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.socketFactory.port">465</prop>
+				<prop key="mail.smtp.socketFactory.fallback">false</prop>
+				<prop key="mail.smtp.auth">true</prop> 
+				<prop key="mail.smtp.timeout">8500</prop>
+				<!-- log를 보고 싶다면 true. false로 하면 메일 관련 메시지가 나오지 않는다 -->
+				<prop key="mail.debug">true</prop>	
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="modelMapper" class="org.modelmapper.ModelMapper" />
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	
+	
 </beans>

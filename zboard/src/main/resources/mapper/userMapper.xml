@@ -24,10 +24,10 @@
 	</select>
 	
 	<insert id="insert">
-		insert into users (username, password, irum, email, joinday, birthday, login_failure_cnt,
-		write_cnt, levels, enabled, profile, check_code) 
-		values(#{username}, #{password}, #{irum}, #{email}, #{joinday}, #{birthday}, 
-		#{loginFailureCnt}, #{writeCnt}, #{level}, #{enabled}, #{profile}, #{checkCode})
+		insert into users(username, password, irum, email, joinday, birthday,
+		 login_failure_cnt, write_cnt, levels, enabled, profile, check_code)
+		 values(#{username}, #{password}, #{irum}, #{email}, sysdate, #{birthday},
+		  0, 0, #{level}, 0, #{profile}, #{checkCode})
 	</insert>
 	
 	<!-- 
