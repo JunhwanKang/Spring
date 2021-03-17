@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,4 +80,12 @@ public class UserRestService {
 		
 		mailUtil.sendJoinCheckMail("admin@sboard.com", user.getEmail(), checkCode);
 	}
+	
+	
+	@Scheduled(cron="0 0 4 ? * THU")
+	public void deleteUncheckUser() {
+		dao.deleteByCheckCodeIsNotNull();
+	}
+	
+	
 }
