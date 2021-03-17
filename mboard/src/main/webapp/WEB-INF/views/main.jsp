@@ -23,7 +23,16 @@ section {
 	overflow: hidden;
 }
 </style>
-
+<script>
+	$(function() {
+		var msg = "${msg}";
+		console.log(msg)
+		if(msg!="") {
+			$("#alert").text(msg);
+			$("#msg").show();
+		}
+	});
+</script>
 <body>
 	<div id="page">
 		<header>

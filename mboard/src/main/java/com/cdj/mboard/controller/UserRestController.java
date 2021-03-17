@@ -9,8 +9,13 @@
 
 package com.cdj.mboard.controller;
 
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cdj.mboard.dto.UserDto.Join;
-import com.cdj.mboard.entity.User;
 import com.cdj.mboard.service.UserRestService;
 
 @RestController
@@ -40,10 +44,10 @@ public class UserRestController {
 	}
 
 	@PostMapping("/users")
-	public ResponseEntity<?> join(@ModelAttribute Join dto, @ModelAttribute User user , @RequestParam MultipartFile profile){
-		System.out.println("dto는 이거: "+dto);
-		System.out.println("user는 이거: "+user);
-		System.out.println("profile은 이거: "+profile.getOriginalFilename());
+	public ResponseEntity<?> join(@ModelAttribute @Valid Join dto, BindingResult bindingResult,
+			@RequestParam MultipartFile profile) throws BindException{
+		if(bindingResult.hasErrors())
+			throw new BindException(bindingResult);
 		service.join(dto, profile);
 		return ResponseEntity.ok(null);
 	}

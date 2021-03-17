@@ -20,9 +20,9 @@ public class MailUtil {
 		StringBuffer buf = new StringBuffer("<p>회원가입을 위한 안내 메일입니다</p>");
 		buf.append("<p>가입을 확인을 위해 아래 링크를 클릭하세요</p>");
 		buf.append("<p>가입 확인 링크: ");
-		buf.append("<a href='http://localhost:8081/mboard/user/join_checkCode='");
+		buf.append("<a href='http://localhost:8081/mboard/user/join_check?checkCode=");
 		buf.append(checkCode);
-		buf.append(">클릭하세요</a></p>");
+		buf.append("'>클릭하세요</a></p>");
 		mail.setText(buf.toString());
 		sendMail(mail);
 	}

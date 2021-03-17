@@ -10,4 +10,5 @@ public class BoardController {
 	public ModelAndView main() {
 		return new ModelAndView("main").addObject("viewname", "board/list.jsp");
 	}
+	
 }
