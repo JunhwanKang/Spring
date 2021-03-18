@@ -17,6 +17,10 @@ public class UserController {
 	public ModelAndView join() {
 		return new ModelAndView("main").addObject("viewname", "user/join.jsp");
 	}
+	@GetMapping("/user/imgtq")
+	public ModelAndView img() {
+		return new ModelAndView("main").addObject("viewname", "user/imgtq.jsp");
+	}
 	
 	@GetMapping("/user/login")
 	public ModelAndView login() {

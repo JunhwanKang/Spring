@@ -56,15 +56,19 @@ public class UserRestService {
 	@Transactional
 	public void join(Join dto, MultipartFile profile) {
 		User user = modelMapper.map(dto, User.class);
-		System.out.println(user);
+		
 		if(profile!=null && profile.isEmpty()==false) {
-			user.setProfile(profile.getOriginalFilename());
-			File profileFile = new File(profileFolder, profile.getOriginalFilename());
+			String profileName = user.getUsername() + ".jpg";
+			File profileFile = new File(profileFolder, profileName);
 			try {
 				FileCopyUtils.copy(profile.getBytes(), profileFile);
+				user.setProfile(profileName);
 			} catch (IOException e) {
+				user.setProfile("default.jpg");
 				e.printStackTrace();
 			}
+		} else {
+			user.setProfile("default.jpg");
 		}
 		
 		String checkCode = RandomStringUtils.randomAlphanumeric(20);
