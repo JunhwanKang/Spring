@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.zboard3.dao.UserDao">
+	<!-- 오라클이 사용하는 user, comment, level 단어는 sql에 사용 불가 -->
+	<select id="findById" resultType="user">
+		select * from users where username=#{username} and rownum=1
+	</select>
+	
+	<select id="findByEmail" resultType="user">
+		select * from users where email=#{email} and rownum=1
+	</select>
+	
+	<select id="findByCheckCode" resultType="user">
+		select * from users where checkCode=#{checkCode} and rownum=1
+	</select>
+	
+	<insert id="insert">
+		insert into users(username,password,email,irum,birthday,joinday,loginFailureCnt,writeCnt,levels,profile,checkCode,enabled)
+		values(#{username},#{password},#{email},#{irum},#{birthday},sysdate,0,0,#{levels},#{profile},#{checkCode},0)
+	</insert>
+	
+	<update id="update">
+		update users
+		<trim suffixOverrides="," prefix="set">
+			<if test="checkCode!=null">checkCode=null,</if>
+			<if test="enabled!=null">enabled=#{enabled},</if>
+		</trim>
+		where username=#{username} and rownum=1
+	</update>
+	
+	<delete id="deleteByCheckCodeIsNotNull">
+		delete from users where checkCode is not null
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
